@@ -16,7 +16,7 @@ var prendreArticles = () => {
 
         for (index in data){
             contenu.innerHTML += `
-            <a href="./product.html?id="${data[index]._id}">
+            <a href="./product.html?id=${data[index]._id}">
             <article>
               <img src="${data[index].imageUrl}" alt="${data[index].altTxt}">
               <h3 class="productName">${data[index].name}</h3>
