@@ -1,20 +1,25 @@
 const url = "http://localhost:3000/api/products";
+//déclarer l'url
 var contenu = document.getElementById("items")
+//prendre les éléments par ID
 var prendreArticles = () => {
+    //déclaration de de la variable pour récupérer les données article
     fetch(url)
+    //récupérer les données de l'URL
     .then(async response => {
         const isJson = response.headers.get('content-type')?.includes('application/json');
         const data = isJson ? await response.json() : null;
-
-        // check for error response
+        //récupérer les données au format json
         if (!response.ok) {
-            // get error message from body or default to response status
+            
             const error = (data && data.message) || response.status;
             return Promise.reject(error);
         }
+        // créer un message d'erreur en cas de réponse non égale a ok et retourner la promesse
         
 
         for (index in data){
+            //pour chaque index dans les données 
             contenu.innerHTML += `
             <a href="./product.html?id=${data[index]._id}">
             <article>
@@ -24,12 +29,15 @@ var prendreArticles = () => {
             </article>
           </a>
           `
+          //remplacer les données par les images, l'id etc etc
       }
     })
         .catch(error => {
             console.error('There was an error!', error);
         });
+        //en cas d'erreur renvoyer un message d'erreur
     }
     
 prendreArticles()
+//appeler la fonction pour tout lancer
 
