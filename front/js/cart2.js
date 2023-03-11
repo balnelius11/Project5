@@ -20,7 +20,8 @@ let fetchPromises = item2.map((item) => {
         const error = (data && data.message) || response.status;
         return Promise.reject(error);
       }
-      productsToDisplay.push({ id: item.id, quantity: item.quantity, color: item.color, data });
+      productsToDisplay.push({ id: item.id, quantity: parseInt(item.quantity), color: item.color, data: { ...data, price: parseFloat(data.price) }});
+      // ParseInt permet de convertir en entier  la quantité, ...data, price: parseFloat(data.price) permet de convertir en nombre à virgule data.price
     })
     .catch(error => console.error(`Erreur lors de la récupération du produit ${item.id} : ${error}`));
 });
@@ -67,8 +68,7 @@ Promise.all(fetchPromises)
     console.log(totalPrice)
     console.log(totalQuantity)
     const cartPriceSection = document.querySelector('.cart__price');
-      cartPriceSection.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice">${totalPrice}</span> €</p>`;
-
+      cartPriceSection.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice">${totalPrice}</span> ,00€</p>`;
     // Ajouter un écouteur d'événements pour supprimer des produits
     const deleteButtons = document.querySelectorAll('.deleteItem');
     deleteButtons.forEach(button => {

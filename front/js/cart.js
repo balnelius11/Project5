@@ -1,45 +1,53 @@
-let productParsed = JSON.parse(localStorage.getItem("cartItems"));
-//récupérer le panier dans le localstorage
-item2 = productParsed.item
-//stocker ce qui est contenu dans item, dans item 2
+const form = document.querySelector('.cart__order__form');
+const firstNameInput = document.querySelector('#firstName');
+const lastNameInput = document.querySelector('#lastName');
+const cityInput = document.querySelector('#city');
+const emailInput = document.querySelector('#email');
+const nameRegex = /^[a-zA-Z]+$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-if (productParsed == null || productParsed == 0 ) {
-    const cart = document.querySelector('.cart').innerHTML += `Votre panier est vide`;
-} 
-//ajout de l'avertissement de panier vide 
-console.log(item2)
-let index = 0
-console.log(item2[index])
-//definir index a 0 pour la suite
+form.addEventListener('submit', function(event) {
+  let firstName = firstNameInput.value;
+  let lastName = lastNameInput.value;
+  let city = cityInput.value;
+  let email = emailInput.value;
+  
+  // Réinitialiser tous les messages d'erreur avant de vérifier chaque champ
+  document.querySelector('#firstNameErrorMsg').textContent = '';
+  document.querySelector('#lastNameErrorMsg').textContent = '';
+  document.querySelector('#cityErrorMsg').textContent = '';
+  document.querySelector('#emailErrorMsg').textContent = '';
 
-let productData = 0
-const fetchProduit = async () => {
-    //créer la fonction asynchrone pour récupérer les données
-    await fetch(`http://localhost:3000/api/products/${item2[0].id}`)
-      // récupérer le lien de l'api et y adjoindre l'id pour retrouver le produit
-      .then((response) => response.json())
-      // mettre la réponse au format json
-      .then((promise) => {
-       var  productData = promise;
-        document.innerHTML += `
-        <article class="cart__item" data-id="${productData._id}" data-color="${item2[0].color}">
-            <div class="cart__item__img">
-                <img src="${productData.imageUrl}" alt="Photographie d'un canapé">
-            </div>
-        `
-      //mettre la promesse dans la variable productData
-      console.log(productData)
-      });
-};
-productData = fetchProduit()
-console.log(productData)
-async function test() {
-    for (let index = 0; index < item2.length; index++) {
-    document.innerHTML += `
-    <article class="cart__item" data-id="${item2[index].id}" data-color="${item2[index].color}">
-        <div class="cart__item__img">
-            <img src="${productData.imageUrl}" alt="Photographie d'un canapé">
-        </div>
-    `
-}
-}
+  if (!firstName.match(nameRegex)) {
+    event.preventDefault();
+    document.querySelector('#firstNameErrorMsg').textContent = 'Le prénom ne doit contenir que des lettres.';
+  }
+  if (!lastName.match(nameRegex)) {
+    event.preventDefault();
+    document.querySelector('#lastNameErrorMsg').textContent = 'Le nom ne doit contenir que des lettres.';
+  }
+  if (!city.match(nameRegex)) {
+    event.preventDefault();
+    document.querySelector('#cityErrorMsg').textContent = 'La ville ne doit contenir que des lettres.';
+  }
+  if (!email.match(emailRegex)) {
+    event.preventDefault();
+    document.querySelector('#emailErrorMsg').textContent = 'Veuillez saisir une adresse email valide.';
+  }
+
+  // Vérifier s'il y a des messages d'erreur, puis afficher un message d'erreur global
+  const errorMessages = document.querySelectorAll('.cart__order__form p');
+  let isError = false;
+  errorMessages.forEach(function(errorMessage) {
+    if (errorMessage.textContent !== '') {
+      isError = true;
+    }
+  });
+  if (isError) {
+    event.preventDefault();
+    alert('Erreur détectée, vérifiez le formulaire');
+  }
+});
+
+
+
