@@ -1,9 +1,6 @@
 let productsToDisplay = [];
-
 let productParsed = JSON.parse(localStorage.getItem("cartItems"));
 let item2 = productParsed?.item ?? [];
-
-console.log(productParsed);
 
 if (item2.length === 0) {
   const cart = document.querySelector('.cart');
@@ -36,7 +33,8 @@ Promise.all(fetchPromises)
       const total = quantity * data.price;
       totalPrice += total
       totalQuantity += quantity
-      cartContent += `<article class="cart__item" data-id="${id}" data-color="${color}">
+      //récupérer les données et les mettre dans récup
+          cartContent += `<article class="cart__item" data-id="${id}" data-color="${color}">
         <div class="cart__item__img">
           <img src="${data.imageUrl}" alt="Photographie d'un canapé">
         </div>
@@ -131,6 +129,25 @@ Promise.all(fetchPromises)
     });
   }
 )
+let part1 = 0
+// Convertir la chaîne JSON en un objet JavaScript
+let cartItems = JSON.parse(localStorage["cartItems"]);
+
+// Déclarer un tableau en dehors de la boucle
+let itemIds = [];
+
+// Boucler à travers chaque objet "item" et extraire les "id"
+for (let i = 0; i < cartItems.item.length; i++) {
+  let itemId = cartItems.item[i].id;
+  console.log(itemId);
+
+  // Ajouter la valeur de itemId au tableau itemIds
+  itemIds.push(itemId);
+}
+
+// Toutes les valeurs de itemId sont stockées dans le tableau itemIds
+console.log(itemIds);
+
 // ---------------------partie formulaire-------------------
 const form = document.querySelector('.cart__order__form');
 const firstNameInput = document.querySelector('#firstName');
@@ -179,18 +196,18 @@ form.addEventListener('submit', function(event) {
   });
   if (isError) {
     event.preventDefault();
-    alert('Erreur détectée, vérifiez le formulaire');
+    alert("erreur de formulaire")
+    throw new Error('Erreur détectée, vérifiez le formulaire');
   }
 });
 
 
-/*
-// -----------------------------------------------------------------
-// On sélectionne le bouton ayant l'ID "mon-bouton"
+
+// On sélectionne le bouton ayant l'ID "order"
 const bouton = document.querySelector('#order');
 var customer = {}
 // On ajoute un écouteur d'événement pour le clic sur ce bouton
-bouton.addEventListener('click', function() {
+bouton.addEventListener('click', async function() {
 
   // On récupère les valeurs des champs de formulaire
   const firstName = document.querySelector('#firstName').value;
@@ -207,35 +224,37 @@ bouton.addEventListener('click', function() {
     city,
     email
   };
-  customer = customer2
+  
   // On affiche cet objet dans la console pour vérification
   console.log(customer2);
-  // Ici, vous pouvez ajouter le code pour envoyer les données à un serveur ou effectuer une autre action en fonction de vos besoins.
+  
+
+  //tentative de fusion tableau et de customer 2
+  if (!customer2.hasOwnProperty("produits achetés")) {
+    customer2["produits achetés"] = itemIds
+  }
+  console.log(customer2["produits achetés"])
+
+  // -----------------------------------------------------------------
+  // Ici, on ajoute le code pour la requete post une fois que tout est correct.
+  const response = await fetch('http://localhost:3000/api/products/order', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(customer2)
 });
-alert(JSON.parse(JSON.stringify(customer)));
+alert("pause");
+const data = await response.json(); // récupération de la réponse à l'extérieur de la configuration de l'appel
 
-// On ajoute un événement "click" sur le bouton de commande
-const orderButton = document.querySelector('#order');
-orderButton.addEventListener('click', submitOrder);
 
-// Fonction pour envoyer la commande au serveur
-async function submitOrder() {
-  try {
-    // On envoie la commande au serveur
-    const response = await fetch('http://localhost:3000/api/products/order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(customer)
-    });
+});
     
-    // On récupère la réponse du serveur
-    const data = await response.json();
-    
-    // On affiche le message de confirmation
-    alert(data.message);
-    
+// On affiche le message de confirmation
+
+
+/*
+   
     // On redirige l'utilisateur vers la page d'accueil
     window.location.href = '/';
   } catch (error) {
