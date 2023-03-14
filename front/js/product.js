@@ -11,6 +11,7 @@ const fetchproduit = async () => {
     // mettre la réponse au format json
     .then((promise) => {
       productData = promise;
+      console.log(productData)
     }
       //mettre la promesse dans la variable productData
     );

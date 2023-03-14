@@ -3,7 +3,7 @@ let productsToDisplay = [];
 let productParsed = JSON.parse(localStorage.getItem("cartItems"));
 let item2 = productParsed?.item ?? [];
 
-console.log(item2);
+console.log(productParsed);
 
 if (item2.length === 0) {
   const cart = document.querySelector('.cart');
@@ -65,8 +65,6 @@ Promise.all(fetchPromises)
     }
     const cart = document.querySelector('#cart__items');
     cart.innerHTML = cartContent;
-    console.log(totalPrice)
-    console.log(totalQuantity)
     const cartPriceSection = document.querySelector('.cart__price');
       cartPriceSection.innerHTML = `<p>Total (<span id="totalQuantity">${totalQuantity}</span> articles) : <span id="totalPrice">${totalPrice}</span> ,00€</p>`;
     // Ajouter un écouteur d'événements pour supprimer des produits
@@ -131,5 +129,6 @@ Promise.all(fetchPromises)
         window.location.reload()
       });
     });
-  })
+  }
+)
 
