@@ -124,7 +124,7 @@ Promise.all(fetchPromises)
           const updatedItems = cartItems.item.filter(item => item.id !== itemId || item.color !== itemColor);
           localStorage.setItem("cartItems", JSON.stringify({ item: updatedItems }));
         }
-        window.location.reload()
+       // window.location.reload()
       });
     });
   }
@@ -157,7 +157,14 @@ const emailInput = document.querySelector('#email');
 const nameRegex = /^[a-zA-Z]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-form.addEventListener('submit', function(event) {
+
+
+// On sélectionne le bouton ayant l'ID "order"
+const bouton = document.querySelector('#order');
+var customer = {}
+// On ajoute un écouteur d'événement pour le clic sur ce bouton
+
+bouton.addEventListener('click', async function() {
   let firstName = firstNameInput.value;
   let lastName = lastNameInput.value;
   let city = cityInput.value;
@@ -199,67 +206,41 @@ form.addEventListener('submit', function(event) {
     alert("erreur de formulaire")
     throw new Error('Erreur détectée, vérifiez le formulaire');
   }
-});
-
-
-
-// On sélectionne le bouton ayant l'ID "order"
-const bouton = document.querySelector('#order');
-var customer = {}
-// On ajoute un écouteur d'événement pour le clic sur ce bouton
-bouton.addEventListener('click', async function() {
 
   // On récupère les valeurs des champs de formulaire
-  const firstName = document.querySelector('#firstName').value;
-  const lastName = document.querySelector('#lastName').value;
-  const address = document.querySelector('#address').value;
-  const city = document.querySelector('#city').value;
-  const email = document.querySelector('#email').value;
+  const firstNameInput = document.querySelector('#firstName').value;
+  const lastNameInput = document.querySelector('#lastName').value;
+  const addressInput = document.querySelector('#address').value;
+  const cityInput = document.querySelector('#city').value;
+  const emailInput = document.querySelector('#email').value;
 
-  // On crée un objet avec ces valeurs
+  // On crée un objet avec ces valeurs et l'ID des produits achetés
   const customer2 = {
-    firstName,
-    lastName,
-    address,
-    city,
-    email
+    firstNameInput,
+    lastNameInput,
+    addressInput,
+    cityInput,
+    emailInput,
+    products: itemIds
   };
   
   // On affiche cet objet dans la console pour vérification
   console.log(customer2);
   
-
-  //tentative de fusion tableau et de customer 2
-  if (!customer2.hasOwnProperty("produits achetés")) {
-    customer2["produits achetés"] = itemIds
-  }
-  console.log(customer2["produits achetés"])
-
-  // -----------------------------------------------------------------
-  // Ici, on ajoute le code pour la requete post une fois que tout est correct.
+  // On envoie la requête POST pour créer la commande
   const response = await fetch('http://localhost:3000/api/products/order', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(customer2)
-});
-alert("pause");
-const data = await response.json(); // récupération de la réponse à l'extérieur de la configuration de l'appel
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(customer2)
+  });
+  // On attend la réponse de la requête
+  const data =  response.json();
+  
+  // On redirige l'utilisateur vers la page de confirmation avec l'ID de commande
+  //window.location.href = `confirmation.html?id=${data.orderId}`;
+})
 
 
-});
-    
-// On affiche le message de confirmation
-
-
-/*
-   
-    // On redirige l'utilisateur vers la page d'accueil
-    window.location.href = '/';
-  } catch (error) {
-    console.error(error);
-    alert('Une erreur est survenue lors de l\'envoi de la commande.');
-  }
-}
-*/
+ 
