@@ -149,13 +149,6 @@ for (let i = 0; i < cartItems.item.length; i++) {
 console.log(itemIds);
 
 // ---------------------partie formulaire-------------------
-const form = document.querySelector('.cart__order__form');
-const firstNameInput = document.querySelector('#firstName');
-const lastNameInput = document.querySelector('#lastName');
-const cityInput = document.querySelector('#city');
-const emailInput = document.querySelector('#email');
-const nameRegex = /^[a-zA-Z]+$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
 
@@ -165,10 +158,18 @@ var customer = {}
 // On ajoute un écouteur d'événement pour le clic sur ce bouton
 
 bouton.addEventListener('click', async function() {
-  let firstName = firstNameInput.value;
-  let lastName = lastNameInput.value;
-  let city = cityInput.value;
-  let email = emailInput.value;
+  const form = document.querySelector('.cart__order__form');
+const firstNameInput1 = document.querySelector('#firstName');
+const lastNameInput1 = document.querySelector('#lastName');
+const cityInput1 = document.querySelector('#city');
+const emailInput1 = document.querySelector('#email');
+const nameRegex = /^[a-zA-Z]+$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  let firstName = firstNameInput1.value;
+  let lastName = lastNameInput1.value;
+  let city = cityInput1.value;
+  let email = emailInput1.value;
   
   // Réinitialiser tous les messages d'erreur avant de vérifier chaque champ
   document.querySelector('#firstNameErrorMsg').textContent = '';
@@ -214,18 +215,15 @@ bouton.addEventListener('click', async function() {
   const cityInput = document.querySelector('#city').value;
   const emailInput = document.querySelector('#email').value;
 
+
   // On crée un objet avec ces valeurs et l'ID des produits achetés
   const customer2 = {
-    firstNameInput,
-    lastNameInput,
-    addressInput,
-    cityInput,
-    emailInput,
+    contact: {firstName:firstNameInput, lastName:lastNameInput, address:addressInput, city:cityInput, email: emailInput},
     products: itemIds
   };
   
   // On affiche cet objet dans la console pour vérification
-  console.log(customer2);
+  console.log(JSON.stringify(customer2));
   
   // On envoie la requête POST pour créer la commande
   const response = await fetch('http://localhost:3000/api/products/order', {
@@ -241,6 +239,3 @@ bouton.addEventListener('click', async function() {
   // On redirige l'utilisateur vers la page de confirmation avec l'ID de commande
   //window.location.href = `confirmation.html?id=${data.orderId}`;
 })
-
-
- 
