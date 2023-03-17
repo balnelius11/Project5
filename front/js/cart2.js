@@ -237,7 +237,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const dataPromise =  response.json();
   dataPromise.then(data => {
     console.log(data.orderId)
-    alert("stop")
+    alert("appuyez sur OK pour valider votre commande")
       // On redirige l'utilisateur vers la page de confirmation avec l'ID de commande
   window.location.href = `confirmation.html?id=${data.orderId}`;
   })
