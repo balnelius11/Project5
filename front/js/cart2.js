@@ -82,6 +82,7 @@ Promise.all(fetchPromises)
         const cartItems = JSON.parse(localStorage.getItem("cartItems"));
         const updatedItems = cartItems.item.filter(item => item.id !== itemId || item.color !== itemColor);
         localStorage.setItem("cartItems", JSON.stringify({ item: updatedItems }));
+        location.reload()
       });
     });
 
@@ -123,7 +124,7 @@ Promise.all(fetchPromises)
           const updatedItems = cartItems.item.filter(item => item.id !== itemId || item.color !== itemColor);
           localStorage.setItem("cartItems", JSON.stringify({ item: updatedItems }));
         }
-       // window.location.reload()
+       window.location.reload()
       });
     });
   }
