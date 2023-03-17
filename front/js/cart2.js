@@ -33,7 +33,6 @@ Promise.all(fetchPromises)
       const total = quantity * data.price;
       totalPrice += total
       totalQuantity += quantity
-      //récupérer les données et les mettre dans récup
           cartContent += `<article class="cart__item" data-id="${id}" data-color="${color}">
         <div class="cart__item__img">
           <img src="${data.imageUrl}" alt="Photographie d'un canapé">
@@ -224,7 +223,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
   // On affiche cet objet dans la console pour vérification
   console.log(JSON.stringify(customer2));
-  
+  var data2 =""
   // On envoie la requête POST pour créer la commande
   const response = await fetch('http://localhost:3000/api/products/order', {
     method: 'POST',
@@ -234,8 +233,11 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     body: JSON.stringify(customer2)
   });
   // On attend la réponse de la requête
-  const data =  response.json();
-  
-  // On redirige l'utilisateur vers la page de confirmation avec l'ID de commande
-  //window.location.href = `confirmation.html?id=${data.orderId}`;
+  const dataPromise =  response.json();
+  dataPromise.then(data => {
+    console.log(data.orderId)
+    alert("stop")
+      // On redirige l'utilisateur vers la page de confirmation avec l'ID de commande
+  window.location.href = `confirmation.html?id=${data.orderId}`;
+  })
 })
