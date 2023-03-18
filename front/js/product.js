@@ -47,7 +47,7 @@ let cartItems = {
 }
 
 // Vérifie si localStorage contient des données (Ex : Panier d'autres pages)
-// Si contient des données, push les données dans le tableau cartItems grâce à la boucle FOR
+// Si contient des données, push l ligne 45es données dans le tableau cartItems grâce à la boucle FOR
 // Pour ne pas écraser les données du localStorage
 
 if (typeof localStorage.cartItems !== "undefined") {
@@ -58,7 +58,7 @@ if (typeof localStorage.cartItems !== "undefined") {
     cartItems.item.push({"id" : pushItems.item[`${n}`].id, "color" : pushItems.item[`${n}`].color, "quantity" : pushItems.item[`${n}`].quantity})
   }
 }
-
+console.log(cartItems.item)
 // Récupère color et quantity sélectionnées
 // Si quantity = 0, ne rien faire (pour ne créer de ligne vide)
 // Si l'ID ET color sont déja dans le tableau, trouve l'index et modifie la quantité et met à jour le localStorage
@@ -73,13 +73,11 @@ function addToCartData(evenement) {
 
 
   if (selectedQuantity === "0" || selectedColor === "") {
-    console.log("Quantity must be above 0, item not created");
+    alert("Quantity must be above 0, item not created");
   } else if ((cartItems.item.find(item => item.id === id && item.color === selectedColor))) {
-    console.log("MERDE");
+    alert("l'article a été ajouté au panier");
     let itemIndex = cartItems.item.findIndex(item => item.id === id && item.color === selectedColor)
-
-    console.log(itemIndex);
-
+    console.log(itemIndex)
     const cartItemQuantity = +cartItems.item[`${itemIndex}`].quantity
     const quantityToAdd = +selectedQuantity
 
@@ -88,7 +86,7 @@ function addToCartData(evenement) {
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
 
   } else {
-    console.log("méfuck");
+    alert("l'article a été ajouté au panier");
     cartItems.item.push({"id" : id, "color" : selectedColor, "quantity" : selectedQuantity})
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
   }
@@ -99,16 +97,5 @@ function addToCartData(evenement) {
 
 const addToCart = document.getElementById("addToCart")
 addToCart.addEventListener("click", addToCartData)
-
-// Récupère les data API dans kanapData
-// Appelle createKanapItem avec les data API
-
-const main = async () => {
-
-  const kanapData = await retrieveKanapData()
-
-  createKanapItem(kanapData)
-
-}
 
 produitDispo()

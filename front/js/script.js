@@ -16,7 +16,7 @@ var prendreArticles = () => {
             return Promise.reject(error);
         }
         // créer un message d'erreur en cas de réponse non égale a ok et retourner la promesse
-        
+        console.log(data)
 
         for (index in data){
             //pour chaque index dans les données 
