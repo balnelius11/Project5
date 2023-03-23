@@ -47,7 +47,7 @@ let cartItems = {
 }
 
 // Vérifie si localStorage contient des données (Ex : Panier d'autres pages)
-// Si contient des données, push l ligne 45es données dans le tableau cartItems grâce à la boucle FOR
+// Si contient des données, push les données dans le tableau cartItems grâce à la boucle FOR
 // Pour ne pas écraser les données du localStorage
 
 if (typeof localStorage.cartItems !== "undefined") {
@@ -80,14 +80,22 @@ function addToCartData(evenement) {
     console.log(itemIndex)
     const cartItemQuantity = +cartItems.item[`${itemIndex}`].quantity
     const quantityToAdd = +selectedQuantity
-
+    const totalQuantity = cartItemQuantity + quantityToAdd
+    if (totalQuantity >100){
+      alert("Quantity must be below 100")
+      return
+    }
     cartItems.item[`${itemIndex}`].quantity = `${cartItemQuantity + quantityToAdd}`
 
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
 
   } else {
+    if (selectedQuantity <= 100) {
+      cartItems.item.push({"id" : id, "color" : selectedColor, "quantity" : selectedQuantity})
+    } else {
+      cartItems.item.push({"id" : id, "color" : selectedColor, "quantity" : "100"})
+    }
     alert("l'article a été ajouté au panier");
-    cartItems.item.push({"id" : id, "color" : selectedColor, "quantity" : selectedQuantity})
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
   }
 }

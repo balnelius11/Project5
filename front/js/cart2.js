@@ -5,8 +5,8 @@ let item2 = productParsed?.item ?? [];
 if (item2.length === 0) {
   const cart = document.querySelector('.cart');
   cart.innerHTML = `Votre panier est vide`;
-}
-
+}else{
+  
 let fetchPromises = item2.map((item) => {
   const url = "http://localhost:3000/api/products/" + item.id;
   return fetch(url)
@@ -22,6 +22,7 @@ let fetchPromises = item2.map((item) => {
     })
     .catch(error => console.error(`Erreur lors de la récupération du produit ${item.id} : ${error}`));
 });
+console.log(productsToDisplay)
 
 Promise.all(fetchPromises)
   .then(() => {
@@ -242,3 +243,4 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   window.location.href = `confirmation.html?id=${data.orderId}`;
   })
 })
+}
