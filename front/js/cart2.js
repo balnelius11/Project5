@@ -1,12 +1,12 @@
 let productsToDisplay = [];
 let productParsed = JSON.parse(localStorage.getItem("cartItems"));
 let item2 = productParsed?.item ?? [];
-
+//si item2 est de taille égale a 0 alors afficher "votre panier est vide"
 if (item2.length === 0) {
   const cart = document.querySelector('.cart');
   cart.innerHTML = `Votre panier est vide`;
 }else{
-  
+//sinon récupérer les données  grace a l'url + l'id  de chaque article et récupérer les données produits et les convertir en json
 let fetchPromises = item2.map((item) => {
   const url = "http://localhost:3000/api/products/" + item.id;
   return fetch(url)
@@ -23,7 +23,7 @@ let fetchPromises = item2.map((item) => {
     .catch(error => console.error(`Erreur lors de la récupération du produit ${item.id} : ${error}`));
 });
 console.log(productsToDisplay)
-
+//créé un tableau de promesses  et récupère les données a l'intérieur pour les publier dans la page web 
 Promise.all(fetchPromises)
   .then(() => {
     let cartContent = "";
@@ -164,8 +164,9 @@ const firstNameInput1 = document.querySelector('#firstName');
 const lastNameInput1 = document.querySelector('#lastName');
 const cityInput1 = document.querySelector('#city');
 const emailInput1 = document.querySelector('#email');
-const nameRegex = /^[a-zA-Z]+$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const nameRegex = /^[a-zA-Z -]+$/;
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 
   let firstName = firstNameInput1.value;
   let lastName = lastNameInput1.value;
