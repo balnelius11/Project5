@@ -75,16 +75,17 @@ function addToCartData(evenement) {
   if (selectedQuantity === "0" || selectedColor === "") {
     alert("Quantity must be above 0, item not created");
   } else if ((cartItems.item.find(item => item.id === id && item.color === selectedColor))) {
-    alert("l'article a été ajouté au panier");
+
     let itemIndex = cartItems.item.findIndex(item => item.id === id && item.color === selectedColor)
     console.log(itemIndex)
     const cartItemQuantity = +cartItems.item[`${itemIndex}`].quantity
     const quantityToAdd = +selectedQuantity
     const totalQuantity = cartItemQuantity + quantityToAdd
     if (totalQuantity >100){
-      alert("Quantity must be below 100")
+      alert("la quantité ne doit pas dépasser 100, votre demande d'ajout d'article a donc été supprimée ")
       return
     }
+    alert("l'article a été ajouté au panier");
     cartItems.item[`${itemIndex}`].quantity = `${cartItemQuantity + quantityToAdd}`
 
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
@@ -94,6 +95,7 @@ function addToCartData(evenement) {
       cartItems.item.push({"id" : id, "color" : selectedColor, "quantity" : selectedQuantity})
     } else {
       cartItems.item.push({"id" : id, "color" : selectedColor, "quantity" : "100"})
+      alert("votre demande dépasse les 100 articles, le nombre d'article commandé a donc été ramené a 100")
     }
     alert("l'article a été ajouté au panier");
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
